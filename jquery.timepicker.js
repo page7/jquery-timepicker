@@ -795,6 +795,8 @@ requires jQuery 1.7+
 		switch (e.keyCode) {
 
 			case 13: // return
+				var selected = list.find('.ui-timepicker-hover');
+				selected.removeClass('ui-timepicker-hover').addClass('ui-timepicker-selected');
 				if (_selectValue(self)) {
 					methods.hide.apply(this);
 				}
@@ -803,7 +805,7 @@ requires jQuery 1.7+
 				return false;
 
 			case 38: // up
-				var selected = list.find('.ui-timepicker-selected');
+				var selected = list.find('.ui-timepicker-hover');
 
 				if (!selected.length) {
 					list.find('li').each(function(i, obj) {
@@ -812,11 +814,11 @@ requires jQuery 1.7+
 							return false;
 						}
 					});
-					selected.addClass('ui-timepicker-selected');
+					selected.addClass('ui-timepicker-hover');
 
 				} else if (!selected.is(':first-child')) {
-					selected.removeClass('ui-timepicker-selected');
-					selected.prev().addClass('ui-timepicker-selected');
+					selected.removeClass('ui-timepicker-hover');
+					selected.prev().addClass('ui-timepicker-hover');
 
 					if (selected.prev().position().top < selected.outerHeight()) {
 						list.scrollTop(list.scrollTop() - selected.outerHeight());
@@ -826,7 +828,7 @@ requires jQuery 1.7+
 				return false;
 
 			case 40: // down
-				selected = list.find('.ui-timepicker-selected');
+				selected = list.find('.ui-timepicker-hover');
 
 				if (selected.length === 0) {
 					list.find('li').each(function(i, obj) {
@@ -836,10 +838,10 @@ requires jQuery 1.7+
 						}
 					});
 
-					selected.addClass('ui-timepicker-selected');
+					selected.addClass('ui-timepicker-hover');
 				} else if (!selected.is(':last-child')) {
-					selected.removeClass('ui-timepicker-selected');
-					selected.next().addClass('ui-timepicker-selected');
+					selected.removeClass('ui-timepicker-hover');
+					selected.next().addClass('ui-timepicker-hover');
 
 					if (selected.next().position().top + 2*selected.outerHeight() > list.outerHeight()) {
 						list.scrollTop(list.scrollTop() + selected.outerHeight());
@@ -849,7 +851,7 @@ requires jQuery 1.7+
 				return false;
 
 			case 27: // escape
-				list.find('li').removeClass('ui-timepicker-selected');
+				list.find('li').removeClass('ui-timepicker-hover');
 				methods.hide();
 				break;
 
@@ -1141,7 +1143,7 @@ requires jQuery 1.7+
 		selectOnBlur: false,
 		disableTouchKeyboard: false,
 		forceRoundTime: false,
-		appendTo: 'body',
+		appendTo: function(self){ return self.parent(); },
 		orientation: 'ltr',
 		disableTimeRanges: [],
 		closeOnWindowScroll: false,
